@@ -47,5 +47,9 @@ public class ProductSearchServiceWithRepo {
 	public List<Product> findByProductMatchingNames(final String productName) {
 		return productRepository.findByNameContaining(productName);	
 	}
+	
+	public Iterable<Product> findAl() {
+		return productRepository.findAll();
+	}
 
 }

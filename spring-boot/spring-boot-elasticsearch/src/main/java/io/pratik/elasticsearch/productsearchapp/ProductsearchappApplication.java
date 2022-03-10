@@ -10,6 +10,8 @@ import java.util.Scanner;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -53,6 +55,13 @@ public class ProductsearchappApplication {
 	}
 
 	private Collection<Product> prepareDataset() {
+		
+		ElasticsearchClientConfig client = new ElasticsearchClientConfig();
+		
+		RestHighLevelClient restHighLevelClient = client.elasticsearchClient();
+		
+		SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+		
 		Resource resource = new ClassPathResource("fashion-products.csv");
 		List<Product> productList = new ArrayList<Product>();
 

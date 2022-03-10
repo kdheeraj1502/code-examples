@@ -50,5 +50,10 @@ public class SearchService {
 	      
 		return productRepository.findByNameContaining(name);
 	}
+	
+	public void findAll(){
+		Iterable<Product> it = productRepository.findAll();
+		it.forEach(System.out::println);
+	}
 
 }

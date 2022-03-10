@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.pratik.elasticsearch.models.Product;
@@ -28,24 +29,31 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class UIController {
-	
-	private  SearchService searchService;
+
+	private SearchService searchService;
 
 	@Autowired
-	public UIController(SearchService searchService) { 
-	    this.searchService = searchService;
+	public UIController(SearchService searchService) {
+		this.searchService = searchService;
 	}
 
 	@GetMapping("/search")
-    public String home(Model model) {
+	public String home(Model model) {
 		List<Product> products = searchService.fetchProductNamesContaining("Hornby");
-        
-		List<String> names = products.stream().flatMap(prod->{
+
+		List<String> names = products.stream().flatMap(prod -> {
 			return Stream.of(prod.getName());
 		}).collect(Collectors.toList());
 		log.info("product names {}", names);
-        model.addAttribute("names", names);
-        return "search";
-    }
- 
+		model.addAttribute("names", names);
+		return "search";
+	}
+
+	@GetMapping("/findall")
+	@ResponseBody
+	public String findAll() {
+		searchService.findAll();
+		return "success";
+	}
+
 }
